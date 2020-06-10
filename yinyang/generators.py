@@ -4,6 +4,7 @@ from .common import *
 
 def cubic_bezier_yinyang(radius=1.0
     , dot_radius=0.6, dot_align=0.5, angle=0.0, ratio=0.5):
+  #TODO: add dots and docs
   top_radius, bottom_radius = ratio * radius, (1.0-ratio) * radius
   top_offset, bottom_offset = -bottom_radius, top_radius
   # inner goes top to left to right to bottom
