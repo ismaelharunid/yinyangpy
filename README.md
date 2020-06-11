@@ -12,4 +12,4 @@ Some examples....
 
 ![yinyang-secondpress.png](https://github.com/ismaelharunid/yinyangpy/tree/master/examples/yinyang-secondpress.png)
 
-![yinyang-secondpress.png](https://github.com/ismaelharunid/yinyangpy/tree/master/examples/yinyang540-bounce.gif)
+![yinyang540-bounce.gif](https://github.com/ismaelharunid/yinyangpy/tree/master/examples/yinyang540-bounce.gif)

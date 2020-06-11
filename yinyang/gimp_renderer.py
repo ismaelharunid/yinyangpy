@@ -3,6 +3,31 @@ from .renderer import Renderer
 from .common import *
 
 
+try:
+  import gimpfu
+except:
+  if 'gimpfu' not in globals():
+    print('gimpfu not available')
+    gimpfu = None
+
+try:
+  import gimp
+except:
+  if 'gimp' not in globals():
+    print('gimp not available')
+    gimp = None
+
+
+def gvsid2gvs(gimp_vector, gimp_stroke_id):
+  for stroke in gimp_vector.strokes:
+    if stroke.ID == gimp_stroke_id:
+      return stroke
+
+gbpdc2gvs = lambda gv,gbpd,gbpc: gvsid2gvs(gv, \
+    gimp.pdb.gimp_vectors_stroke_new_from_points(gv \
+    , gimpfu.VECTORS_STROKE_TYPE_BEZIER, len(gbpd), gbpd, gbpc))
+
+
 class GimpRenderer(Renderer):
   
   _ItemType = gimp.Layer

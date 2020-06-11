@@ -19,6 +19,8 @@ inbounce = lambda i,n,s=1: (n-abs(n-float(i)%(2*n)))*s/n
 _scales = lambda s, sn, d, dn: (s[i]*d[i%dn] for i in range(sn))
 scales = lambda s, d: type(s)(_scales(s, len(s), d, len(d)))
 
+is2tuple = lambda v: type(value) is tuple and len(value) == 2
+
 types = lambda s, t: t(c for c in s)
 
 _opapplys = lambda op, sa,na, sb, nb, d: (op(sa[i%na+j],sb[i%nb+j]) \
@@ -41,4 +43,3 @@ bpd2gbpd = lambda bpd, closed=None: \
     _bpd2gbpd(bpd, abs(bpd[:2] - bpd[-2:]) <= epsilon if closed is None else \
     closed)
 
-is2tuple = lambda v: type(value) is tuple and len(value) == 2
