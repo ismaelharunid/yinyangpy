@@ -8,9 +8,11 @@ thirdpi = pi / 3
 halfpi = .5 * pi
 twopi = 2 * pi
 circle4k = 0.55191502449
+twothirds = 2. / 3.
 
 dist = lambda x, y: sqrt(x*x + y*y)
-
+_dists = lambda a,an, b,bn: sqrt(sum((a[i%an]-b[i%bn])**2 for i in range(max(an,bn))))
+dists = lambda a, b=(0,): _dists(a,len(a), b,len(b))
 lerp = lambda a, b, t=0.5: a + (b-a) * t
 lerps = lambda sa, sb, t=0.5: type(sa)(lerp(sa[i],sb[i],t) for i in range(len(sa)))
 

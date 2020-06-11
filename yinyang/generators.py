@@ -8,9 +8,9 @@ def cubic_bezier_yinyang(radius=1.0
   top_radius, bottom_radius = ratio * radius, (1.0-ratio) * radius
   top_offset, bottom_offset = -bottom_radius, top_radius
   topdot_offset = -lerp(dot_radius, 2*top_radius-dot_radius, dot_align)
-  print dot_radius, top_radius, dot_align, topdot_offset
+  #print(dot_radius, top_radius, dot_align, topdot_offset)
   bottomdot_offset = lerp(dot_radius, 2*bottom_radius-dot_radius, dot_align)
-  print dot_radius, bottom_radius, dot_align, bottomdot_offset
+  #print(dot_radius, bottom_radius, dot_align, bottomdot_offset)
   # inner goes top to left to right to bottom
   inner = \
       ( 0.,                     top_offset-top_radius

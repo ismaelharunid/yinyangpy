@@ -39,8 +39,8 @@ class Renderer(MutableMapping):
   def __init__(self, name, size, background=None):
     self._name = name
     self._size = size
-    self._frame_names = []
-    self._frames = []
+    self._frame_names = {}
+    self._frames = {}
     self._background = background
   
   def __contains__(self, key):

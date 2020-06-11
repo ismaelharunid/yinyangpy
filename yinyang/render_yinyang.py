@@ -2,16 +2,29 @@
 from .common import *
 
 
-def ti_value(value, i_frames, n_frames, ti, default=None):
+def ti_value(value, i_frames, n_frames, ti, default=None, astype=None):
   if callable(value):
-    return value(i_frames, n_frames, ti, default)
-  if is2tuple(value):
-    if isinstance(value, Sequence):
-      return lerps(value[0], value[1], float(i_frames % n_frames) / n_frames)
-    if isinstance(value, Number):
-      return lerp(value[0], value[1], float(i_frames % n_frames) / n_frames)
-  if value is None: return default
-  return value
+    result = value(i_frames, n_frames, ti, default)
+  elif is2tuple(value) and isinstance(value[0], Number):
+    result = lerp(value[0], value[1], float(i_frames % n_frames) / n_frames)
+  elif value is None:
+    result = default
+  else:
+    result = value
+  return astype(result) if callable(astype) and result is not None else result
+
+
+def ti_values(value, i_frames, n_frames, ti, default=None, astype=None):
+  if callable(value):
+    result = value(i_frames, n_frames, ti, default)
+  elif is2tuple(value) and isinstance(value[0], Sequence):
+    result = lerps(value[0], value[1], float(i_frames % n_frames) / n_frames)
+  elif value is None:
+    result = default
+  else:
+    result = value
+  return type(value)(astype(c) for c in result) \
+      if callable(astype) and result is not None else result
 
 
 def render(generator, renderer, size, n_frames, frame_start=0, frame_stop=1
@@ -33,9 +46,9 @@ def render(generator, renderer, size, n_frames, frame_start=0, frame_stop=1
   for i_frames in range(frame_start, frame_stop, 1):
     frame_name = 'frame={:05d}'.format(i_frames)
     ti = float(make_time(i_frames, n_frames))
-    off = ti_value(off, i_frames, n_frames, ti)
-    fills = tuple(ti_value(clr, i_frames, n_frames, ti) for clr in colors)
-    stroke = ti_value(stroke_color, i_frames, n_frames, ti)
+    off = ti_values(off, i_frames, n_frames, ti)
+    fills = tuple(ti_values(clr, i_frames, n_frames, ti) for clr in colors)
+    stroke = ti_values(stroke_color, i_frames, n_frames, ti)
     weight = ti_value(stroke_weight, i_frames, n_frames, ti)
     rad = ti_value(radius, i_frames, n_frames, ti)
     dotrad = ti_value(dot_radius, i_frames, n_frames, ti)

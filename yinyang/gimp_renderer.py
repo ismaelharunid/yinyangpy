@@ -1,21 +1,34 @@
 
+import warnings
 from .renderer import Renderer
 from .common import *
 
 
+"""
+handle gimp envirment stuff so the submodule can load regardless whether \
+gimpfu, gimp and pdb are available or not.
+"""
+GimpImage = GimpLayer = GimpVector = None
 try:
-  import gimpfu
+  if 'gimpfu' not in globals():
+    import gimpfu
+  if 'gimp' not in globals():
+    gimp = gimpfu.gimp
+  GimpImage = gimp.Image
+  GimpLayer = gimp.Layer
+  GimpVector = gimp.Vectors
+  if 'pdb' not in globals():
+    pdb = gimpfu.pdb
 except:
   if 'gimpfu' not in globals():
-    print('gimpfu not available')
+    warnings.warn("gimp_renderer: gimpfu module not available", ImportWarning)
     gimpfu = None
-
-try:
-  import gimp
-except:
   if 'gimp' not in globals():
-    print('gimp not available')
+    warnings.warn("gimp_renderer: gimp module not available", ImportWarning)
     gimp = None
+  if 'pdb' not in globals():
+    warnings.warn("gimp_renderer: pdb module not available", ImportWarning)
+    pdb = None
 
 
 def gvsid2gvs(gimp_vector, gimp_stroke_id):
@@ -30,7 +43,7 @@ gbpdc2gvs = lambda gv,gbpd,gbpc: gvsid2gvs(gv, \
 
 class GimpRenderer(Renderer):
   
-  _ItemType = gimp.Layer
+  _ItemType = GimpLayer
   
   _frame_group = None
   
@@ -60,7 +73,8 @@ class GimpRenderer(Renderer):
   def flush(self):
     return list(self._frames)
   
-  def bezier_fill(self, frame_name, yins, offset, yin_color):
+  def bezier_fill(self, frame_name, yins, offset, colors
+      , stroke_color, stroke_weight):
     n_beziers = len(beziers)
     layer = pdb.gimp_layer_new(image, width, height, layer_type, frame_name, 100, 0)
     pdb.gimp_image_insert_layer(image, layer, None, i_frames)
